@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>eBay Price Checker</title>
+    <style>
+      body {
+        font-family: "Trebuchet MS";
+        padding: 10px;
+      }
+      input,
+      button {
+        width: 100%;
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>
+      Go to Ebay, filter "sold" items and search. Then in this box, enter
+      multiple items, one on each line and then click the button below:
+    </h3>
+    <textarea id="items" rows="6" placeholder="One item per line..."></textarea>
+    <button id="check">Click Here</button>
+    <pre id="output"></pre>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
