@@ -3,24 +3,75 @@
   <head>
     <title>eBay Price Checker</title>
     <style>
-      body {
-        font-family: "Trebuchet MS";
-        padding: 10px;
+      :root {
+        --primary-color: #e31c25;
+        --background-color: #141414;
+        --text-color: #ffffff;
+        --secondary-bg: #232323;
       }
-      input,
+
+      body {
+        font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+        padding: 20px;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      h3 {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 20px;
+        color: var(--text-color);
+      }
+
+      textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(227, 28, 37, 0.2);
+      }
+
       button {
         width: 100%;
-        margin: 5px 0;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      button:hover {
+        background-color: #43cc21;
+      }
+
+      button:active {
+        transform: scale(0.98);
+      }
+
+      #output {
+        margin-top: 20px;
+        background-color: var(--secondary-bg);
+        padding: 16px;
+        border-radius: 8px;
+        font-family: "Consolas", monospace;
+        font-size: 14px;
+        white-space: pre-wrap;
       }
     </style>
   </head>
   <body>
-    <h3>
-      Go to Ebay, filter "sold" items and search. Then in this box, enter
-      multiple items, one on each line and then click the button below:
-    </h3>
-    <textarea id="items" rows="6" placeholder="One item per line..."></textarea>
-    <button id="check">Click Here</button>
+    <h3>Enter items to check prices (one per line):</h3>
+    <textarea
+      id="items"
+      rows="8"
+      placeholder="Example:&#13;&#10;iPhone 13 Pro Max&#13;&#10;PlayStation 5&#13;&#10;MacBook Pro M1"
+    ></textarea>
+    <button id="check">Check Prices</button>
     <pre id="output"></pre>
 
     <script src="popup.js"></script>
