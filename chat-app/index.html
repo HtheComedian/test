@@ -4,217 +4,67 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat App</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Oxygen, Ubuntu, Cantarell, sans-serif;
-      }
-
-      body {
-        background: #f0f2f5;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .chat-container {
-        max-width: 1200px;
-        margin: 20px auto;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex: 1;
-        overflow: hidden;
-      }
-
-      .sidebar {
-        width: 280px;
-        background: #fff;
-        border-right: 1px solid #e0e0e0;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .user-info {
-        padding: 20px;
-        background: #f0f2f5;
-        border-bottom: 1px solid #e0e0e0;
-      }
-
-      .user-info input {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        font-size: 14px;
-      }
-
-      .online-users {
-        flex: 1;
-        overflow-y: auto;
-        padding: 10px;
-      }
-
-      .user-item {
-        padding: 10px;
-        margin: 5px 0;
-        border-radius: 8px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        transition: background-color 0.2s;
-      }
-
-      .user-item:hover {
-        background: #f0f2f5;
-      }
-
-      .user-status {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        margin-right: 10px;
-        background: #31a24c;
-      }
-
-      .main-chat {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .chat-header {
-        padding: 20px;
-        background: #f0f2f5;
-        border-bottom: 1px solid #e0e0e0;
-      }
-
-      .messages {
-        flex: 1;
-        overflow-y: auto;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .message {
-        max-width: 70%;
-        padding: 10px 15px;
-        margin: 5px 0;
-        border-radius: 15px;
-        font-size: 14px;
-        line-height: 1.4;
-        position: relative;
-      }
-
-      .message-content {
-        margin-bottom: 5px;
-      }
-
-      .response-time-indicator {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        font-size: 12px;
-        margin-top: 5px;
-      }
-
-      .response-time-box {
-        width: 40px;
-        height: 24px;
-        border-radius: 3px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 10px;
-        font-weight: bold;
-        color: rgb(0, 0, 0);
-        text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
-      }
-
-      .response-time-fast {
-        background-color: #2ecc71;
-      }
-
-      .response-time-medium {
-        background-color: #f1c40f;
-      }
-
-      .response-time-slow {
-        background-color: #e74c3c;
-      }
-
-      .response-time-text {
-        color: #000000;
-        font-size: 12px;
-      }
-
-      .message.received {
-        background: #f0f2f5;
-        align-self: flex-start;
-      }
-
-      .message.sent {
-        background: #5e99cf;
-        color: white;
-        align-self: flex-end;
-      }
-
-      .input-area {
-        padding: 20px;
-        background: #f0f2f5;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .message-input {
-        flex: 1;
-        padding: 12px;
-        border: 1px solid #e0e0e0;
-        border-radius: 20px;
-        font-size: 14px;
-        outline: none;
-      }
-
-      .send-button {
-        padding: 12px 24px;
-        background: #0084ff;
-        color: white;
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 600;
-        transition: background-color 0.2s;
-      }
-
-      .send-button:hover {
-        background: #0073e6;
-      }
-
-      .send-button:active {
-        transform: scale(0.98);
-      }
-
-      .user-info-section {
-        display: flex;
-        align-items: center;
-      }
-
-      .user-response-time {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-      }
-    </style>
+    <!-- link to styles.css -->
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="timer-setup" id="timerSetup" style="display: none">
+      <div class="timer-prompt">
+        <button class="close-button" id="closeTimerSetup">&times;</button>
+        <h2>
+          How long would you like to chat with
+          <span id="selectedUserName"></span>?
+        </h2>
+        <div class="timer-input-container">
+          <input
+            type="number"
+            id="chatDuration"
+            min="1"
+            placeholder="Enter minutes"
+          />
+          <button id="startChat">Start Chat</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="extend-chat-dialog" id="extendChatDialog" style="display: none">
+      <div class="dialog-prompt">
+        <h2>Would you like to extend the chat?</h2>
+        <div class="dialog-buttons">
+          <button id="extendYes">Yes</button>
+          <button id="extendNo">No</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="extend-time-dialog" id="extendTimeDialog" style="display: none">
+      <div class="dialog-prompt">
+        <h2>How many more minutes?</h2>
+        <div class="timer-input-container">
+          <input
+            type="number"
+            id="extendDuration"
+            min="1"
+            placeholder="Enter minutes"
+          />
+          <button id="confirmExtend">Extend</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="feedback-dialog" id="feedbackDialog" style="display: none">
+      <div class="dialog-prompt">
+        <h2>How was your chat?</h2>
+        <div class="emoji-feedback">
+          <button class="emoji-button" data-value="1">😢</button>
+          <button class="emoji-button" data-value="2">🙁</button>
+          <button class="emoji-button" data-value="3">😐</button>
+          <button class="emoji-button" data-value="4">🙂</button>
+          <button class="emoji-button" data-value="5">😊</button>
+        </div>
+      </div>
+    </div>
+
     <div class="chat-container">
       <div class="sidebar">
         <div class="user-info">
@@ -226,7 +76,19 @@
       </div>
       <div class="main-chat">
         <div class="chat-header">
-          <h2>Chat Room</h2>
+          <div class="header-info">
+            <h2>Select a user to start chatting</h2>
+            <div class="chat-timer" id="chatTimer" style="display: none">
+              <span class="timer-display">Time Remaining: --:--</span>
+            </div>
+          </div>
+          <button
+            id="endChatButton"
+            class="end-chat-button"
+            style="display: none"
+          >
+            End Chat
+          </button>
         </div>
         <div class="messages" id="messageList">
           <!-- Messages will be added here dynamically -->
@@ -237,240 +99,16 @@
             class="message-input"
             id="messageInput"
             placeholder="Type a message..."
+            disabled
           />
-          <button class="send-button" id="sendButton">Send</button>
+          <button class="send-button" id="sendButton" disabled>Send</button>
         </div>
       </div>
     </div>
 
-    <script>
-      // Get DOM elements
-      const messageInput = document.getElementById("messageInput");
-      const sendButton = document.getElementById("sendButton");
-      const messageList = document.getElementById("messageList");
-      const userList = document.getElementById("userList");
-      const usernameInput = document.getElementById("username");
-
-      // Store username
-      let username = "";
-
-      // Store connected users
-      const connectedUsers = new Set();
-
-      // Track message timestamps and response times
-      let lastMessageTime = null;
-      let responseTimes = [];
-      let averageResponseTime = 0;
-
-      // Store user response times
-      const userResponseTimes = new Map();
-
-      // Handle username input
-      usernameInput.addEventListener("change", (e) => {
-        username = e.target.value;
-        if (username) {
-          // In a real app, this would connect to a server
-          addUser(username);
-        }
-      });
-
-      // Handle sending messages
-      sendButton.addEventListener("click", sendMessage);
-      messageInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          sendMessage();
-        }
-      });
-
-      function calculateResponseTime() {
-        if (lastMessageTime) {
-          const currentTime = Date.now();
-          const responseTime = (currentTime - lastMessageTime) / 1000; // Convert to seconds
-          responseTimes.push(responseTime);
-
-          // Calculate average response time
-          averageResponseTime =
-            responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length;
-
-          console.log(`Response time: ${responseTime.toFixed(2)} seconds`);
-          console.log(
-            `Average response time: ${averageResponseTime.toFixed(2)} seconds`
-          );
-
-          return responseTime;
-        }
-        return null;
-      }
-
-      function getResponseTimeClass(responseTime) {
-        if (responseTime <= 60) {
-          // Under 1 minute
-          return "response-time-fast";
-        } else if (responseTime <= 300) {
-          // 2-5 minutes (300 seconds)
-          return "response-time-medium";
-        } else {
-          // Over 5 minutes
-          return "response-time-slow";
-        }
-      }
-
-      function formatResponseTime(seconds) {
-        if (seconds < 60) {
-          return `${seconds.toFixed(1)} seconds`;
-        } else {
-          const minutes = Math.floor(seconds / 60);
-          const remainingSeconds = seconds % 60;
-          return `${minutes}m ${remainingSeconds.toFixed(0)}s`;
-        }
-      }
-
-      function updateUserResponseTime(username, responseTime) {
-        if (!userResponseTimes.has(username)) {
-          userResponseTimes.set(username, []);
-        }
-        userResponseTimes.get(username).push(responseTime);
-
-        // Update the visual indicator
-        updateUserResponseTimeDisplay(username);
-      }
-
-      function getUserAverageResponseTime(username) {
-        const times = userResponseTimes.get(username);
-        if (!times || times.length === 0) return null;
-        return times.reduce((a, b) => a + b, 0) / times.length;
-      }
-
-      function formatMinutesForBox(seconds) {
-        const minutes = (seconds / 60).toFixed(1);
-        return minutes;
-      }
-
-      function updateUserResponseTimeDisplay(username) {
-        const userDiv = document.querySelector(
-          `.user-item[data-username="${username}"]`
-        );
-        if (!userDiv) return;
-
-        const avgTime = getUserAverageResponseTime(username);
-        if (avgTime === null) return;
-
-        const responseTimeBox = userDiv.querySelector(".response-time-box");
-        responseTimeBox.className = `response-time-box ${getResponseTimeClass(
-          avgTime
-        )}`;
-        responseTimeBox.textContent = formatMinutesForBox(avgTime);
-      }
-
-      function sendMessage() {
-        const message = messageInput.value.trim();
-        if (message && username) {
-          // Calculate response time if there was a previous message
-          const responseTime = calculateResponseTime();
-          if (responseTime !== null) {
-            updateUserResponseTime(username, responseTime);
-          }
-
-          // Add the message with response time if it exists
-          addMessage(message, true, responseTime);
-          messageInput.value = "";
-
-          // Update last message time
-          lastMessageTime = Date.now();
-
-          // Simulate received message (in a real app, this would come from the server)
-          setTimeout(() => {
-            const simulatedResponseTime = calculateResponseTime();
-            if (simulatedResponseTime !== null) {
-              // Simulate updating bot's response time
-              updateUserResponseTime("Bot", simulatedResponseTime);
-            }
-            addMessage(
-              `This is a simulated response to: ${message}`,
-              false,
-              simulatedResponseTime
-            );
-            lastMessageTime = Date.now();
-          }, 1000);
-        }
-      }
-
-      function addMessage(text, isSent, responseTime = null) {
-        const messageDiv = document.createElement("div");
-        messageDiv.className = `message ${isSent ? "sent" : "received"}`;
-
-        // Create message content wrapper
-        const contentDiv = document.createElement("div");
-        contentDiv.className = "message-content";
-        contentDiv.textContent = text;
-        messageDiv.appendChild(contentDiv);
-
-        // Add response time indicator if available
-        if (responseTime !== null) {
-          const responseTimeDiv = document.createElement("div");
-          responseTimeDiv.className = "response-time-indicator";
-
-          const timeBox = document.createElement("span");
-          timeBox.className = `response-time-box ${getResponseTimeClass(
-            responseTime
-          )}`;
-
-          const timeText = document.createElement("span");
-          timeText.className = "response-time-text";
-          timeText.textContent = `Response time: ${formatResponseTime(
-            responseTime
-          )}`;
-
-          responseTimeDiv.appendChild(timeBox);
-          responseTimeDiv.appendChild(timeText);
-          messageDiv.appendChild(responseTimeDiv);
-        }
-
-        messageList.appendChild(messageDiv);
-        messageList.scrollTop = messageList.scrollHeight;
-      }
-
-      function addUser(name) {
-        if (!connectedUsers.has(name)) {
-          connectedUsers.add(name);
-          const userDiv = document.createElement("div");
-          userDiv.className = "user-item";
-          userDiv.setAttribute("data-username", name);
-
-          // Create the main user info section (status and name)
-          const userInfoSection = document.createElement("div");
-          userInfoSection.className = "user-info-section";
-          userInfoSection.innerHTML = `
-            <div class="user-status"></div>
-            <div class="user-name">${name}</div>
-          `;
-
-          // Create the response time section
-          const responseTimeSection = document.createElement("div");
-          responseTimeSection.className = "user-response-time";
-          responseTimeSection.innerHTML = `
-            <span class="response-time-box response-time-fast">0.0</span>
-          `;
-
-          userDiv.appendChild(userInfoSection);
-          userDiv.appendChild(responseTimeSection);
-          userList.appendChild(userDiv);
-        }
-      }
-
-      // Add some initial simulated users with random response times
-      ["Alice", "Bob", "Charlie"].forEach((name) => {
-        addUser(name);
-        // Simulate some random response times for initial users
-        const randomTimes = Array.from(
-          { length: 3 },
-          () => Math.random() * 400
-        );
-        randomTimes.forEach((time) => updateUserResponseTime(name, time));
-      });
-
-      // Add bot user
-      addUser("Bot");
-    </script>
+    <!-- Load JavaScript files -->
+    <script src="storage.js"></script>
+    <script src="sentiments.js"></script>
+    <script src="chat.js"></script>
   </body>
 </html>
